@@ -7,6 +7,11 @@ const User = dbConfig.sequelize.define('user', {
         primaryKey: true,
         unique: true
     },
+    googleId: {
+        type: sequelize.DataTypes.STRING,             //if someone has googleId, they don't need password, otherwise password is necessary
+        allowNull: true,
+        unique: true
+    },
     email: {
         type: sequelize.DataTypes.STRING,
         allowNull: false,
@@ -18,7 +23,7 @@ const User = dbConfig.sequelize.define('user', {
     },
     password: {
         type: sequelize.DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: false

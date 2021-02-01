@@ -15,8 +15,8 @@ const Rate = dbConfig.sequelize.define('rate', {
         allowNull: false
     }
 }, { timestamps: false, tableName: "rates" });
-User.belongsToMany(Book, { through: Rate });
-Book.belongsToMany(User, { through: Rate });
+ User.belongsToMany(Book, { through: Rate });
+ Book.belongsToMany(User, { through: Rate });
 User.hasMany(Rate);
 Rate.belongsTo(User);
 Book.hasMany(Rate);

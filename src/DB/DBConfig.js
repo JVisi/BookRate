@@ -1,5 +1,5 @@
 const sequelize = require("sequelize");
-const params = require("./params");
+const params = require("../params.json");
 
 const seq = new sequelize.Sequelize(params.db_name, params.db_username, params.db_password, {
     host: params.host,
