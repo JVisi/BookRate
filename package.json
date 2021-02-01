@@ -1,0 +1,31 @@
+{
+  "name": "book_rate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JVisi/BookRate.git"
+  },
+  "author": "JVisi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JVisi/BookRate/issues"
+  },
+  "homepage": "https://github.com/JVisi/BookRate#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
