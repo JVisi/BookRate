@@ -1,5 +1,5 @@
 const passport = require('passport');
-const { isLoggedIn, isAlreadyLoggedIn, isFormatGood } = require('../Authorization/MiddleWares');
+const { isLoggedIn, isAlreadyLoggedIn, isFormatGood,addBook } = require('../Authorization/MiddleWares');
 const router=require('express').Router()
 const queries=require('../DB/Queries')
 
@@ -7,38 +7,56 @@ const queries=require('../DB/Queries')
 router.get("/",(req,res)=>{
     res.send("Hello world")
 })
-
-router.get('/auth/google',isAlreadyLoggedIn,
-  passport.authenticate('google', { scope: ['profile','email'] }));
+router.get("/good",isLoggedIn,(req,res)=>{
+  res.json({"req":req.user})
+})
 
 
 router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
-  console.log(req)
   queries.register(req.body.user.email,req.body.user.name,req.body.user.password).then((result)=>{
-    res.json({"user":{"email":result.email,"name":result.name}})
+    res.json({"user":{"email":result.email,"name":result.name}})    //Client gets back the json, and has to make a login request
   },(error)=>{
     console.log(error)
-    res.json({"msg":error})
-  })
-})
-router.post("/auth/login",isAlreadyLoggedIn,(req,res)=>{
-  queries.login(req.body.user.email,req.body.user.password).then((result)=>{
-    res.json({"user":{"email":result.email,"name":result.name}})
-  },(error)=>{
-    console.log(error)
-    res.json({"msg":error})
+    res.json({"error":error})
   })
 })
 
-router.get('/auth/google/callback', 
-  passport.authenticate('google',{ failureRedirect: '/' }),
+router.post('/auth/login', isAlreadyLoggedIn,
+  passport.authenticate('local', { failureMessage:"Error" }),
   function(req, res) {
-    console.log("Beta is alive")
-    res.json({"email":req.user.email, "name":req.user.name})
+    res.json({"user":{"email":req.user.email, "name":req.user.name}});
   });
-router.get("/logout",(req,res)=>{
+
+router.get('/auth/google',isAlreadyLoggedIn,
+passport.authenticate('google', { scope: ['profile','email'] })
+);
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google',{failureMessage: 'Error' }),
+  function(req, res) {
+    res.json({"user":{"email":req.user.email, "name":req.user.name}})
+  });
+router.get("/logout",isLoggedIn,(req,res)=>{
     req.session=null
     req.logout()
-    res.json({"msg":"Logged out"})
+    res.json({"message":"Logged out"})
 })
+router.post('/addBook',[isLoggedIn,addBook],(req,res)=>{
+  terminateFunction(req,res,queries.addBook(req.body.book))
+})
+
+router.post('/searchBook',(req,res)=>{                          //no need to be logged in, hence no isLoggedIn
+  terminateFunction(req,res,queries.searchBook(req.body.keyWord))
+})
+router.get('/getAllBooks',(req,res)=>{                          //no need to be logged in, hence no isLoggedIn
+  terminateFunction(req,res,queries.getAllBooks())       //we may wanna give a range option in the future
+})
+
+const terminateFunction=(req,res,func)=>{       //function to terminate simple functions, where we send back the whole result from the query
+  func.then((result)=>{
+    res.json(result)
+  },(err)=>{
+    res.json({"error":err})
+  })
+}
 module.exports=router

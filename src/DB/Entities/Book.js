@@ -25,7 +25,7 @@ const Book = config.sequelize.define('book', {
         unique: false
     },
     year: {
-        type: sequelize.DataTypes.DATEONLY,
+        type: sequelize.DataTypes.SMALLINT,
         allowNull: true,
         unique: false
     },
@@ -35,7 +35,7 @@ const Book = config.sequelize.define('book', {
         unique: false
     },
     added: {
-        type: sequelize.DataTypes.DATE,
+        type: sequelize.DataTypes.DATEONLY,
         allowNull: false
     },
     addedBy: {

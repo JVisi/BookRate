@@ -1,11 +1,14 @@
 const passport = require('passport');
 const params=require('../params.json')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const LocalStrategy = require('passport-local')
 const User =require('../DB/Entities/User')
 const {generateId}=require('../functions')
+const queries=require('../DB/Queries')
 
 passport.serializeUser(function(user, done) {
-     done(null, user.dataValues.id);
+    console.log(user)
+     done(null, user.id);
   });
   
 passport.deserializeUser(function(userId, done) {
@@ -39,7 +42,6 @@ passport.use(new GoogleStrategy({
                 })
             }
             else if(result!=null){
-                console.log("Epsylon is alive")
                 return done(null,result)
             }else{
                 return done("unexcepted error",null)
@@ -48,5 +50,20 @@ passport.use(new GoogleStrategy({
           //DB error
           return done("err",null)
       })
+    }
+));
+
+passport.use(new LocalStrategy({
+    usernameField:"user[email]",
+    passwordField:"user[password]"
+},
+    function(username, password, done) {
+        console.log("Helloooooooo")
+        queries.login(username,password).then((result)=>{
+            return done(null,result)
+        },(err)=>{
+            console.log("Localstrat",err)
+            return done(err)
+        })
     }
 ));

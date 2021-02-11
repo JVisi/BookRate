@@ -1,6 +1,6 @@
 
 
-const isLoggedIn=(req,res,next)=>{
+const isLoggedIn=(req,res,next)=>{          //when user wants to do something that they need to be logged in for
     
     console.log(req.user)
     if(req.user){
@@ -11,7 +11,7 @@ const isLoggedIn=(req,res,next)=>{
         res.sendStatus(401)
     }
 }
-const isAlreadyLoggedIn=(req,res,next)=>{
+const isAlreadyLoggedIn=(req,res,next)=>{   //when user wants to log in/register but an account is already logged in
     console.log(req.user)
     if(req.user){
         console.log(req.user)
@@ -35,8 +35,24 @@ const isFormatGood=(req,res,next)=>{
         res.sendStatus(400)
     }
 }
+const addBook=(req,res,next)=>{
+    if(req.body.book!==null){
+        let book=req.body.book
+        if(book.ISBN ===null || book.name===null || book.author===null){
+            res.sendStatus(400)
+        }
+    
+        else{
+            next()
+        }
+    }
+    else{
+        res.sendStatus(400)
+    }
+}
 module.exports={
     isLoggedIn,
     isAlreadyLoggedIn,
-    isFormatGood
+    isFormatGood,
+    addBook
 }
