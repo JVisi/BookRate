@@ -30,13 +30,13 @@ router.post('/auth/login', isAlreadyLoggedIn,
   router.post('/login', isAlreadyLoggedIn,function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
       console.log(err,user,info)
-      if (err) { return next(err); }
+      if (err) { return res.json(err); }
       if (!user) { 
           res.status(401);
-          res.end(info.message);
+          res.json(info);
           return;
       }else{
-        res.send(user)
+        res.json(user)
       }
     })(req, res, next);
   });
