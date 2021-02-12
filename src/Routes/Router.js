@@ -22,7 +22,7 @@ router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
 })
 
 router.post('/auth/login', isAlreadyLoggedIn,
-  passport.authenticate('local', { failureMessage:"Error" }),
+  passport.authenticate('local', { failureFlash: true }),
   function(req, res) {
     res.json({"user":{"email":req.user.email, "name":req.user.name}});
   });
@@ -32,7 +32,7 @@ passport.authenticate('google', { scope: ['profile','email'] })
 );
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google',{failureMessage: 'Error' }),
+  passport.authenticate('google',{failureFlash: true }),
   function(req, res) {
     res.json({"user":{"email":req.user.email, "name":req.user.name}})
   });
