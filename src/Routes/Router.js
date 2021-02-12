@@ -43,10 +43,12 @@ router.post('/auth/login', isAlreadyLoggedIn,
         return res.status(422).send(info);
       }
       else{
-        res.json({"user":{"email":req.user.email, "name":req.user.name}});
+        return res.status(500).send()
       }
       // do something here and send back a res.json()
-    })(req, res);
+    }),(req, res)=>{
+      res.json({"user":{"email":req.user.email, "name":req.user.name}});
+    };
   });
 
 router.get('/auth/google',isAlreadyLoggedIn,
