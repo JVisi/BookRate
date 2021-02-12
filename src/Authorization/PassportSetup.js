@@ -1,5 +1,5 @@
 const passport = require('passport');
-const params=require('../params.json')
+//const params=require('../params.json')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local')
 const User =require('../DB/Entities/User')
@@ -26,8 +26,8 @@ passport.deserializeUser(function(userId, done) {
 
 
 passport.use(new GoogleStrategy({
-        clientID: params.googleAuth.token,
-        clientSecret: params.googleAuth.secret,
+        clientID: process.env.GOOGLE_TOKEN,
+        clientSecret: process.env.GOOGLE_SECRET,
         callbackURL: "http://localhost:3000/auth/google/callback"
     },
     function(token, tokenSecret, profile, done) {
