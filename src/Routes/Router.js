@@ -22,7 +22,14 @@ router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
 })
 
 router.post('/auth/login', isAlreadyLoggedIn,
-  passport.authenticate('local', { failureFlash: true, failWithError:true,failureMessage:true }),
+  passport.authenticate('local', (err,user,info)=>{
+    if (err) {
+      return res.status(500).send();
+    }
+    if (!user && info) {
+      return res.json(info);
+    }
+  }),
   function(req, res) {
     res.json({"user":{"email":req.user.email, "name":req.user.name}});
   });
