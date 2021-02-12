@@ -21,7 +21,7 @@ router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
   })
 })
 
-router.post('/auth/login', function(req, res, next) {
+router.post('/auth/login',isAlreadyLoggedIn, function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return res.status(500).send(); }
     if (!user) { return res.json(info); }
