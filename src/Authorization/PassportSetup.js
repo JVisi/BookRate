@@ -58,12 +58,11 @@ passport.use(new LocalStrategy({
     passwordField:"user[password]"
 },
     function(username, password, done) {
-        console.log("Helloooooooo")
         queries.login(username,password).then((result)=>{
             return done(null,result)
         },(err)=>{
             console.log(err)
-            return done(err,null)
+            return done({"error":err},null)
         })
     }
 ));
