@@ -9,7 +9,7 @@ require("./src/Authorization/PassportSetup")
 const router = require("./src/Routes/Router");
 const db=require('./src/DB/DBConfig');
 const https=require('https')
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 const key = fs.readFileSync('./cert/key.pem')
