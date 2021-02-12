@@ -1,6 +1,6 @@
 
 const sequelize = require("sequelize");
-const dbConfig = require("../dbConfig");
+const dbConfig = require("../DBConfig");
 const Book = require("./Book");
 const User = require("./User");
 const Rate = dbConfig.sequelize.define('rate', {
