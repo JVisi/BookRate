@@ -62,7 +62,7 @@ passport.use(new LocalStrategy({
             return done(null,result)
         },(err)=>{
             console.log(err)
-            return done({"error":err},null)
+            return done(null,null,{"error":err})
         })
     }
 ));
