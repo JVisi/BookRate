@@ -28,7 +28,7 @@ passport.deserializeUser(function(userId, done) {
 passport.use(new GoogleStrategy({
         clientID: params.googleAuth.token,
         clientSecret: params.googleAuth.secret,
-        callbackURL: "https://localhost:3000/auth/google/callback"
+        callbackURL: "http://localhost:3000/auth/google/callback"
     },
     function(token, tokenSecret, profile, done) {
         User.findOne({where:{googleId:profile.id}}).then((result)=>{
