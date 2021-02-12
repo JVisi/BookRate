@@ -28,7 +28,7 @@ passport.deserializeUser(function(userId, done) {
 passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_TOKEN,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: "http://localhost:3000/auth/google/callback"
+        callbackURL: process.env.CALLBACK_URL
     },
     function(token, tokenSecret, profile, done) {
         User.findOne({where:{googleId:profile.id}}).then((result)=>{
@@ -62,8 +62,8 @@ passport.use(new LocalStrategy({
         queries.login(username,password).then((result)=>{
             return done(null,result)
         },(err)=>{
-            console.log("Localstrat",err)
-            return done(err)
+            console.log(err)
+            return done(err,null)
         })
     }
 ));
