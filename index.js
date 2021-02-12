@@ -15,6 +15,24 @@ const app = express();
 const key = fs.readFileSync('./cert/key.pem')
 const cert = fs.readFileSync('./cert/cert.pem')
 
+
+
+
+const Rate = require("./src/DB/Entities/Rates");
+ const Book = require("./src/DB/Entities/Book");
+ const User = require("./src/DB/Entities/User");
+ //User.sync({force:true})
+ //Book.sync({force:true})
+db.testConnection()
+Rate.findAll({ include: [Book,User], where: { id: 1 } }).then((result) => { console.log(result[0]); });
+
+
+
+
+
+
+
+
 app.use(helmet());
 app.use(cors());
 app.use(cookie({
@@ -30,7 +48,7 @@ app.use(router)
 
 app.get('/', (req, res) => { res.send('this is an secure server') });
 const server=https.createServer({key: key, cert: cert }, app)
-server.listen(port, () => { console.log(`listening on ${port}`) });
-// app.listen(port, () => {
-//     console.info(`app is listening on port ${port}`);
-// });
+server.listen(3001, () => { console.log(`listening on ${port}`) });
+app.listen(port, () => {
+    console.info(`app is listening on port ${port}`);
+});
