@@ -1,3 +1,4 @@
+const { serializeUser } = require('passport');
 const passport = require('passport');
 const { isLoggedIn, isAlreadyLoggedIn, isFormatGood,addBook } = require('../Authorization/MiddleWares');
 const router=require('express').Router()
@@ -36,6 +37,9 @@ router.post('/auth/login', isAlreadyLoggedIn,
           res.json(info);
           return;
       }else{
+        serializeUser(function(user, done) {
+           done(null, user.id);
+        });
         res.json(user)
       }
     })(req, res, next);
