@@ -55,14 +55,15 @@ passport.use(new GoogleStrategy({
 
 passport.use(new LocalStrategy({
     usernameField:"user[email]",
-    passwordField:"user[password]"
+    passwordField:"user[password]",
+    passReqToCallback:true
 },
-    function(username, password, done) {
+    function(req, username, password, done) {
         queries.login(username,password).then((result)=>{
             return done(null,result)
         },(err)=>{
             console.log(err)
-            return done(null,null,{"error":err})
+            return done(null,null,req.flash('error',{"error":err}))
         })
     }
 ));

@@ -23,32 +23,10 @@ router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
 })
 
 router.post('/auth/login', isAlreadyLoggedIn,
-  passport.authenticate('local', { failureFlash: true, failWithError:true,failureMessage:true }),
+  passport.authenticate('local', { failureFlash: true }),
   function(req, res) {
     res.json({"user":{"email":req.user.email, "name":req.user.name}});
   });
-
-  router.post('/login', isAlreadyLoggedIn,function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
-      console.log(err,user,info)
-      if (err) { return res.json(err); }
-      if (!user) { 
-          res.status(401);
-          res.json(info);
-          return;
-      }else{
-        serializeUser(function(user, done) {
-           done(null, user.id);
-        });
-        res.json(user)
-      }
-    })(req, res, next);
-  });
-
-
-
-
-
 
 router.get('/auth/google',isAlreadyLoggedIn,
 passport.authenticate('google', { scope: ['profile','email'] })
