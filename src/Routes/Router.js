@@ -34,6 +34,21 @@ router.post('/auth/login', isAlreadyLoggedIn,
     res.json({"user":{"email":req.user.email, "name":req.user.name}});
   });
 
+  router.post('/login', isAlreadyLoggedIn,(req, res) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) {
+        return res.status(500).send();
+      }
+      if (!user && info) {
+        return res.status(422).send(info);
+      }
+      else{
+        res.json({"user":{"email":req.user.email, "name":req.user.name}});
+      }
+      // do something here and send back a res.json()
+    })(req, res);
+  });
+
 router.get('/auth/google',isAlreadyLoggedIn,
 passport.authenticate('google', { scope: ['profile','email'] })
 );
