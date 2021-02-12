@@ -21,24 +21,16 @@ router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
   })
 })
 
-// router.post('/auth/login', isAlreadyLoggedIn,
-//   passport.authenticate('local', { failureFlash: true }),
-//   function(req, res) {
-//     res.json({"user":{"email":req.user.email, "name":req.user.name}});
-//   });
-
-
-
-  router.get('/login', function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
-      if (err) { return res.status(500).send(); }
-      if (!user) { return res.json(info); }
-      req.logIn(user, function(err) {
-        if (err) { return next(err); }
-        return res.json({"user":{"email":user.email, "name":user.name}});
-      });
-    })(req, res, next);
-  });
+router.post('/auth/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return res.status(500).send(); }
+    if (!user) { return res.json(info); }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.json({"user":{"email":user.email, "name":user.name}});
+    });
+  })(req, res, next);
+});
 
 
 
