@@ -22,34 +22,29 @@ router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
 })
 
 router.post('/auth/login', isAlreadyLoggedIn,
-  passport.authenticate('local', (err,user,info)=>{
-    if (err) {
-      return res.status(500).send();
-    }
-    if (!user && info) {
-      return res.json(info);
-    }
-  }),
+  passport.authenticate('local', { failureFlash: true, failWithError:true,failureMessage:true }),
   function(req, res) {
     res.json({"user":{"email":req.user.email, "name":req.user.name}});
   });
 
-  router.post('/login', isAlreadyLoggedIn,(req, res) => {
-    passport.authenticate('local', (err, user, info) => {
-      if (err) {
-        return res.status(500).send();
+  router.post('/login', isAlreadyLoggedIn,function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+      console.log(err,user,info)
+      if (err) { return next(err); }
+      if (!user) { 
+          res.status(401);
+          res.end(info.message);
+          return;
+      }else{
+        res.send(user)
       }
-      if (!user && info) {
-        return res.status(422).send(info);
-      }
-      else{
-        return res.status(500).send()
-      }
-      // do something here and send back a res.json()
-    }),(req, res)=>{
-      res.json({"user":{"email":req.user.email, "name":req.user.name}});
-    };
+    })(req, res, next);
   });
+
+
+
+
+
 
 router.get('/auth/google',isAlreadyLoggedIn,
 passport.authenticate('google', { scope: ['profile','email'] })
