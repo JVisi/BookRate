@@ -1,4 +1,5 @@
 const express = require("express");
+const flash=require('connect-flash')
 const helmet = require("helmet");
 const cors = require("cors");
 const body_parser = require("body-parser");
@@ -22,6 +23,7 @@ app.use(body_parser.urlencoded({ extended: false }));
 app.use(body_parser.json());
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(flash())
 app.use(router)
 
 app.get('/', (req, res) => { res.send('this is an secure server') });

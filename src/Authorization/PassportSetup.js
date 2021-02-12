@@ -53,7 +53,7 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-passport.use(new LocalStrategy({
+passport.use('local',new LocalStrategy({
     usernameField:"user[email]",
     passwordField:"user[password]",
     passReqToCallback:true
