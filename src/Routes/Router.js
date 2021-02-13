@@ -7,9 +7,6 @@ const queries=require('../DB/Queries')
 router.get("/",(req,res)=>{
     res.send("Hello world")
 })
-router.get("/good",isLoggedIn,(req,res)=>{
-  res.json({"req":req.user})
-})
 
 
 router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
@@ -33,11 +30,6 @@ router.post('/auth/login',isAlreadyLoggedIn, function(req, res, next) {
 });
 
 
-
-
-
-
-
 router.get('/auth/google',isAlreadyLoggedIn,
 passport.authenticate('google', { scope: ['profile','email'] })
 );
@@ -53,17 +45,24 @@ router.get("/logout",isLoggedIn,(req,res)=>{
     res.json({"message":"Logged out"})
 })
 router.post('/addBook',[isLoggedIn,addBook],(req,res)=>{
-  terminateFunction(req,res,queries.addBook(req.body.book))
+  terminateFunction(res,queries.addBook(req.body.book))
 })
 
 router.post('/searchBook',(req,res)=>{                          //no need to be logged in, hence no isLoggedIn
-  terminateFunction(req,res,queries.searchBook(req.body.keyWord))
+  terminateFunction(res,queries.searchBook(req.body.keyWord))
 })
 router.get('/getAllBooks',(req,res)=>{                          //no need to be logged in, hence no isLoggedIn
-  terminateFunction(req,res,queries.getAllBooks())       //we may wanna give a range option in the future
+  terminateFunction(res,queries.getAllBooks())       //we may wanna give a range option in the future
 })
 
-const terminateFunction=(req,res,func)=>{       //function to terminate simple functions, where we send back the whole result from the query
+router.post("/rateBook",isLoggedIn,(req,res)=>{
+  terminateFunction(res,queries.rateBook(req.user.id,req.body.ISBN,req.body.rate))
+})
+router.get("/rates",[isLoggedIn],(req,res)=>{
+  terminateFunction(res,queries.getRatesOfUser(req.user.id))
+})
+
+const terminateFunction=(res,func)=>{       //function to terminate simple functions, where we send back the whole result from the query
   func.then((result)=>{
     res.json(result)
   },(err)=>{

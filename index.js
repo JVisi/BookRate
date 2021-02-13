@@ -24,7 +24,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(router)
 
-app.get('/', (req, res) => { res.send('this is an secure server') });
 app.listen(port, () => {
     console.info(`app is listening on port ${port}`);
 });

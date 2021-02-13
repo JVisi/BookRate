@@ -2,6 +2,29 @@ const User = require("./Entities/User")
 const Book = require("./Entities/Book")
 const {generateId, encrypt,compare}=require('../functions')
 const { Op } = require("sequelize")
+const Rate = require("./Entities/Rates")
+
+
+const rateBook=(id,ISBN,rate)=>{
+    return new Promise((resolve,reject)=>{
+        Book.findOne({where:{ISBN:ISBN}}).then((book)=>{
+            console.log(book)
+            if(book===null){ reject("Invalid ISBN")}
+            else{
+                Rate.create({id:generateId(),rate:rate,userId:id,bookId:book.dataValues.id}).then((rate)=>{
+                    resolve({"message":"OK"})
+                },err=>reject("Already rated"))
+            }
+        },err=>reject("DB error"))
+    })
+}
+const getRatesOfUser=(id)=>{
+    return new Promise((resolve,reject)=>{
+        Rate.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((rates)=>{
+            resolve(rates)
+        },err=>reject("DB error"))
+    })
+}
 
 const register=(email,name,password)=>{
     return new Promise((resolve,reject)=>{
@@ -107,5 +130,7 @@ module.exports={
     login,
     getAllBooks,
     searchBook,
-    addBook
+    addBook,
+    rateBook,
+    getRatesOfUser
 }

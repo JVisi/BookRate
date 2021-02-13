@@ -1,8 +1,7 @@
 
 
 const isLoggedIn=(req,res,next)=>{          //when user wants to do something that they need to be logged in for
-    
-    console.log(req.user)
+
     if(req.user){
         console.log(req.user)
         next();
@@ -50,6 +49,7 @@ const addBook=(req,res,next)=>{
         res.sendStatus(400)
     }
 }
+
 module.exports={
     isLoggedIn,
     isAlreadyLoggedIn,
