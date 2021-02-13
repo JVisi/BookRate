@@ -6,12 +6,14 @@ const Rate = require("./Entities/Rates")
 
 
 const rateBook=(id,ISBN,rate)=>{
+    let rating=rate<=0 ? 1 : rate
+    rating=rate>=11 ? 10 : rate
     return new Promise((resolve,reject)=>{
         Book.findOne({where:{ISBN:ISBN}}).then((book)=>{
             console.log(book)
             if(book===null){ reject("Invalid ISBN")}
             else{
-                Rate.create({id:generateId(),rate:rate,userId:id,bookId:book.dataValues.id}).then((rate)=>{
+                Rate.create({id:generateId(),rate:rating,userId:id,bookId:book.dataValues.id}).then((rate)=>{
                     resolve({"message":"OK"})
                 },err=>reject("Already rated"))
             }
@@ -95,7 +97,7 @@ const searchBook=(keyWord)=>new Promise((resolve,reject)=>{
             reject("DB error")
         })
 })
-const addBook=(book)=>{
+const addBook=(book,username)=>{
     return new Promise((resolve,reject)=>{
         let date=new Date()
         console.log("asdfas"+date.getHours())
@@ -109,7 +111,7 @@ const addBook=(book)=>{
                 year:book.year||null,
                 languageCode:book.languageCode || null,
                 added:book.added || currentDate,
-                addedBy: book.addedBy || "admin"
+                addedBy: username
             }).then((result)=>{
                 console.log(result)
                 book.year=result.year

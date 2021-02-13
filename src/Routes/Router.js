@@ -3,9 +3,74 @@ const { isLoggedIn, isAlreadyLoggedIn, isFormatGood,addBook } = require('../Auth
 const router=require('express').Router()
 const queries=require('../DB/Queries')
 
+const endPoints={
+  "/auth/register":{
+    "method":"POST",
+    "data":{
+      "user":{
+        "email":"string,unique",
+        "name":"string",
+        "password":"string"
+      }
+    }
+  },
+  "/auth/login":{
+    "method":"POST",
+    "data":{
+      "user":{
+        "email":"string",
+        "password":"string"
+      }
+    }
+  },
+  "/auth/google":{
+    "method":"GET"
+  },
+  "/logout":{
+    "method":"GET"
+  },
+  "/addBook":{
+    "method":"POST",
+    "data":{
+      "book":{
+        "ISBN":"string, unique",
+        "name":"string",
+        "author":"string",
+        "year":"smallint, optional",
+        "languageCode":"string, (HU,AU,EN etc)",
+        "added":"date, optional"
+      }
+    }
+  },
+  "/searchBook":{
+    "method":"POST",
+    "data":{
+      "keyWord":"string"
+    }
+  },
+  "/getAllBooks":{
+    "method":"GET",
+    "data":{
+      
+    }
+  },
+  "/rateBook":{
+    "method":"POST",
+    "data":{
+      "ISBN":"string",
+      "rate":"integer 1-10"
+    }
+  },
+  "/rates":{
+    "method":"GET",
+    "data":{
+      
+    }
+  }
+}
 
 router.get("/",(req,res)=>{
-    res.send("Hello world")
+    res.json(endPoints)
 })
 
 
@@ -45,7 +110,7 @@ router.get("/logout",isLoggedIn,(req,res)=>{
     res.json({"message":"Logged out"})
 })
 router.post('/addBook',[isLoggedIn,addBook],(req,res)=>{
-  terminateFunction(res,queries.addBook(req.body.book))
+  terminateFunction(res,queries.addBook(req.body.book,req.user.name))
 })
 
 router.post('/searchBook',(req,res)=>{                          //no need to be logged in, hence no isLoggedIn
@@ -61,7 +126,6 @@ router.post("/rateBook",isLoggedIn,(req,res)=>{
 router.get("/rates",[isLoggedIn],(req,res)=>{
   terminateFunction(res,queries.getRatesOfUser(req.user.id))
 })
-
 const terminateFunction=(res,func)=>{       //function to terminate simple functions, where we send back the whole result from the query
   func.then((result)=>{
     res.json(result)
