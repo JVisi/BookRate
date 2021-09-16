@@ -3,7 +3,7 @@ const { isLoggedIn, isAlreadyLoggedIn, isFormatGood,addBook } = require('../Auth
 const router=require('express').Router()
 const queries=require('../DB/Queries')
 
-const endPoints=JSON.parse({
+const endPoints=JSON.stringify({
   "/auth/register":{
     "method":"POST",
     "data":{
