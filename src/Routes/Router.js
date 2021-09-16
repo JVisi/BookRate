@@ -70,7 +70,7 @@ const endPoints={
 }
 
 router.get("/",(req,res)=>{
-    res.json(endPoints)
+    res.json(JSON.parse(endPoints))
 })
 
 
