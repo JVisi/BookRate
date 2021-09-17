@@ -68,7 +68,7 @@ const login=(email,password)=>new Promise((resolve,reject)=>{
 
 const getAllBooks=()=>new Promise((resolve,reject)=>{          //actually first 50, we don't want to send all of them, because why
     Book.findAll({attributes:{exclude:"id"}, limit:50}).then((result)=>{
-        resolve(result)
+        resolve({"books":result})
     },(err)=>{
         console.log(err)
         reject("DB Error")
