@@ -28,6 +28,30 @@ const getRatesOfUser=(id)=>{
     })
 }
 
+
+const wishlistBook=(id,ISBN)=>{
+    return new Promise((resolve,reject)=>{
+        Book.findOne({where:{ISBN:ISBN}}).then((book)=>{
+            console.log(book)
+            if(book===null){ reject("Invalid ISBN")}
+            else{
+                Wishlist.create({id:generateId(),userId:id,bookId:book.dataValues.id}).then((rate)=>{
+                    resolve({"message":"OK"})
+                },()=>reject("Already addded"))
+            }
+        },()=>reject("DB error"))
+    })
+}
+
+const getWishlistOfUser=(id)=>{
+    return new Promise((resolve,reject)=>{
+        Wishlist.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((wishes)=>{
+            resolve(wishes)
+        },err=>reject("DB error"))
+    })
+}
+
+
 const register=(email,name,password)=>{
     return new Promise((resolve,reject)=>{
         encrypt(password).then((encrypted)=>{
@@ -134,5 +158,7 @@ module.exports={
     searchBook,
     addBook,
     rateBook,
-    getRatesOfUser
+    getRatesOfUser,
+    getWishlistOfUser,
+    wishlistBook
 }
