@@ -29,7 +29,7 @@ const getRatesOfUser=(id)=>{
     })
 }
 
-
+/*
 const wishlistBook=(id,ISBN)=>{
     return new Promise((resolve,reject)=>{
         Book.findOne({where:{ISBN:ISBN}}).then((book)=>{
@@ -51,7 +51,7 @@ const getWishlistOfUser=(id)=>{
         },err=>reject("DB error"))
     })
 }
-
+*/
 
 const register=(email,name,password)=>{
     return new Promise((resolve,reject)=>{
@@ -159,7 +159,5 @@ module.exports={
     searchBook,
     addBook,
     rateBook,
-    getRatesOfUser,
-    wishlistBook,
-    getWishlistOfUser
+    getRatesOfUser
 }
