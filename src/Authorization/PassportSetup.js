@@ -1,5 +1,5 @@
 const passport = require('passport');
-const params=require('../params.json')
+//const params=require('../params.json')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local')
 const User =require('../DB/Entities/User')
@@ -26,9 +26,9 @@ passport.deserializeUser(function(userId, done) {
 
 
 passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_TOKEN || params.googleAuth.token,
-        clientSecret: process.env.GOOGLE_SECRET || params.googleAuth.secret,
-        callbackURL: process.env.CALLBACK_URL || "https://bookrate-api.herokuapp.com/auth/google/callback"
+        clientID: process.env.GOOGLE_TOKEN, //|| params.googleAuth.token,
+        clientSecret: process.env.GOOGLE_SECRET, //|| params.googleAuth.secret,
+        callbackURL: process.env.CALLBACK_URL //|| "https://bookrate-api.herokuapp.com/auth/google/callback"
     },
     function(token, tokenSecret, profile, done) {
         User.findOne({where:{googleId:profile.id}}).then((result)=>{
