@@ -7,7 +7,7 @@ const cookie=require("cookie-session")
 require("./src/Authorization/PassportSetup")
 const router = require("./src/Routes/Router");
 const db=require('./src/DB/DBConfig');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 

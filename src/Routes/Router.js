@@ -123,10 +123,6 @@ router.get('/getAllBooks',(req,res)=>{                          //no need to be 
 router.post("/rateBook",isLoggedIn,(req,res)=>{
   terminateFunction(res,queries.rateBook(req.user.id,req.body.ISBN,req.body.rate))
 })
-
-router.post("/wishListBook",isLoggedIn,(req,res)=>{
-  terminateFunction(res,queries.wishlistBook(req.user.id,req.body.ISBN))
-})
 router.get("/rates",[isLoggedIn],(req,res)=>{
   terminateFunction(res,queries.getRatesOfUser(req.user.id))
 })

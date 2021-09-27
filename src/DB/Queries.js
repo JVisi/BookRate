@@ -3,7 +3,6 @@ const Book = require("./Entities/Book")
 const {generateId, encrypt,compare}=require('../functions')
 const { Op } = require("sequelize")
 const Rate = require("./Entities/Rates")
-const Wishlist = require("./Entities/Wishlist")
 
 
 const rateBook=(id,ISBN,rate)=>{
@@ -21,29 +20,6 @@ const rateBook=(id,ISBN,rate)=>{
         },err=>reject("DB error"))
     })
 }
-
-const wishlistBook=(id,ISBN)=>{
-    return new Promise((resolve,reject)=>{
-        Book.findOne({where:{ISBN:ISBN}}).then((book)=>{
-            console.log(book)
-            if(book===null){ reject("Invalid ISBN")}
-            else{
-                Wishlist.create({id:generateId(),userId:id,bookId:book.dataValues.id}).then((rate)=>{
-                    resolve({"message":"OK"})
-                },()=>reject("Already addded"))
-            }
-        },()=>reject("DB error"))
-    })
-}
-
-const getWishlistOfUser=(id)=>{
-    return new Promise((resolve,reject)=>{
-        Wishlist.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((wishes)=>{
-            resolve(wishes)
-        },err=>reject("DB error"))
-    })
-}
-
 const getRatesOfUser=(id)=>{
     return new Promise((resolve,reject)=>{
         Rate.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((rates)=>{
@@ -92,7 +68,7 @@ const login=(email,password)=>new Promise((resolve,reject)=>{
 
 const getAllBooks=()=>new Promise((resolve,reject)=>{          //actually first 50, we don't want to send all of them, because why
     Book.findAll({attributes:{exclude:"id"}, limit:50}).then((result)=>{
-        resolve(result)
+        resolve({"books":result})
     },(err)=>{
         console.log(err)
         reject("DB Error")
@@ -155,8 +131,6 @@ module.exports={
     register,
     login,
     getAllBooks,
-    getWishlistOfUser,
-    wishlistBook,
     searchBook,
     addBook,
     rateBook,
