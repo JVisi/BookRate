@@ -3,6 +3,7 @@ const Book = require("./Entities/Book")
 const {generateId, encrypt,compare}=require('../functions')
 const { Op } = require("sequelize")
 const Rate = require("./Entities/Rates")
+const Wishlist = require("./Entities/Wishlist")
 
 
 const rateBook=(id,ISBN,rate)=>{
@@ -43,13 +44,13 @@ const wishlistBook=(id,ISBN)=>{
     })
 }
 
-/*const getWishlistOfUser=(id)=>{
+const getWishlistOfUser=(id)=>{
     return new Promise((resolve,reject)=>{
         Wishlist.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((wishes)=>{
             resolve(wishes)
         },err=>reject("DB error"))
     })
-}*/
+}
 
 
 const register=(email,name,password)=>{
@@ -159,5 +160,6 @@ module.exports={
     addBook,
     rateBook,
     getRatesOfUser,
-    wishlistBook
+    wishlistBook,
+    getWishlistOfUser
 }
