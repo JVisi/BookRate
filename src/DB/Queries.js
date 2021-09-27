@@ -43,13 +43,13 @@ const wishlistBook=(id,ISBN)=>{
     })
 }
 
-const getWishlistOfUser=(id)=>{
+/*const getWishlistOfUser=(id)=>{
     return new Promise((resolve,reject)=>{
         Wishlist.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((wishes)=>{
             resolve(wishes)
         },err=>reject("DB error"))
     })
-}
+}*/
 
 
 const register=(email,name,password)=>{
@@ -159,6 +159,5 @@ module.exports={
     addBook,
     rateBook,
     getRatesOfUser,
-    getWishlistOfUser,
     wishlistBook
 }
