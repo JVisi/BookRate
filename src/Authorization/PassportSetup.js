@@ -26,9 +26,9 @@ passport.deserializeUser(function(userId, done) {
 
 
 passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_TOKEN, //|| params.googleAuth.token,
-        clientSecret: process.env.GOOGLE_SECRET, //|| params.googleAuth.secret,
-        callbackURL: process.env.CALLBACK_URL //|| "https://bookrate-api.herokuapp.com/auth/google/callback"
+        clientID: process.env.GOOGLE_TOKEN,
+        clientSecret: process.env.GOOGLE_SECRET,
+        callbackURL: process.env.CALLBACK_URL
     },
     function(token, tokenSecret, profile, done) {
         User.findOne({where:{googleId:profile.id}}).then((result)=>{
