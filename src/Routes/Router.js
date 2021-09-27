@@ -130,6 +130,9 @@ router.post("/wishListBook",isLoggedIn,(req,res)=>{
 router.get("/rates",[isLoggedIn],(req,res)=>{
   terminateFunction(res,queries.getRatesOfUser(req.user.id))
 })
+router.get("/wishlisted",[isLoggedIn],(req,res)=>{
+  terminateFunction(res,queries.getWishlistOfUser(req.user.id))
+})
 const terminateFunction=(res,func)=>{       //function to terminate simple functions, where we send back the whole result from the query
   func.then((result)=>{
     res.json(result)
