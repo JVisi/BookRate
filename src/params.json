@@ -1,0 +1,10 @@
+{
+    "host":"eu-cdbr-west-03.cleardb.net",
+    "db_name":"heroku_b64946122ad2120",
+    "db_username":"b296c6879e5cbc",
+    "db_password":"523efd6b",
+    "googleAuth":{
+        "token":"256657491492-e003icq1uulof4rcbo8q9ful7ctbc5s7.apps.googleusercontent.com",
+        "secret":"OLW6tzzYU6VErPkLYPs_iEU1"
+    }
+}

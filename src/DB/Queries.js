@@ -21,15 +21,7 @@ const rateBook=(id,ISBN,rate)=>{
         },err=>reject("DB error"))
     })
 }
-const getRatesOfUser=(id)=>{
-    return new Promise((resolve,reject)=>{
-        Rate.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((rates)=>{
-            resolve(rates)
-        },err=>reject("DB error"))
-    })
-}
 
-/*
 const wishlistBook=(id,ISBN)=>{
     return new Promise((resolve,reject)=>{
         Book.findOne({where:{ISBN:ISBN}}).then((book)=>{
@@ -51,7 +43,14 @@ const getWishlistOfUser=(id)=>{
         },err=>reject("DB error"))
     })
 }
-*/
+
+const getRatesOfUser=(id)=>{
+    return new Promise((resolve,reject)=>{
+        Rate.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((rates)=>{
+            resolve(rates)
+        },err=>reject("DB error"))
+    })
+}
 
 const register=(email,name,password)=>{
     return new Promise((resolve,reject)=>{
@@ -156,6 +155,8 @@ module.exports={
     register,
     login,
     getAllBooks,
+    getWishlistOfUser,
+    wishlistBook,
     searchBook,
     addBook,
     rateBook,
