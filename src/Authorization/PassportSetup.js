@@ -1,4 +1,4 @@
-require('dotenv').config()
+//require('dotenv').config()
 const passport = require('passport')
 //const params=require('../params.json')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
