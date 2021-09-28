@@ -1,9 +1,7 @@
 
 
-const isLoggedIn=(req,res,next)=>{          //when user wants to do something that they need to be logged in for
-
+const isLoggedIn=(req,res,next)=>{    
     if(req.user){
-        console.log(req.user)
         next();
     }
     else{
@@ -11,7 +9,8 @@ const isLoggedIn=(req,res,next)=>{          //when user wants to do something th
     }
 }
 const isAlreadyLoggedIn=(req,res,next)=>{   //when user wants to log in/register but an account is already logged in
-    console.log(req.user)
+    //console.log(req.user)
+    
     if(req.user){
         console.log(req.user)
         res.status(403).send({"message":"Already Logged in"})

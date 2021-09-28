@@ -82,14 +82,36 @@ router.post("/auth/register", [isAlreadyLoggedIn, isFormatGood],(req,res)=>{
     res.json({"error":error})
   })
 })
+router.post("/mobile/register", [isFormatGood],(req,res)=>{
+  queries.register(req.body.user.email,req.body.user.name,req.body.user.password).then((result)=>{
+    res.json({"user":{"id":result.id,"email":result.email,"name":result.name}})    //Client gets back the json, and has to make a login request
+  },(error)=>{
+    console.log(error)
+    res.json({"error":error})
+  })
+})
+
+
 
 router.post('/auth/login',isAlreadyLoggedIn, function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return res.status(500).send(); }
     if (!user) { return res.json(info); }
     req.logIn(user, function(err) {
+      console.log("Faszom görög betű: ", user)
       if (err) { return next(err); }
       return res.json({"user":{"email":user.email, "name":user.name}});
+    });
+  })(req, res, next);
+});
+
+router.post('/mobile/login',isAlreadyLoggedIn, function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return res.status(500).send(); }
+    if (!user) { return res.json(info); }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.json({"user":{"id":user.id,"email":user.email, "name":user.name}});
     });
   })(req, res, next);
 });
@@ -123,9 +145,17 @@ router.get('/getAllBooks',(req,res)=>{                          //no need to be 
 router.post("/rateBook",isLoggedIn,(req,res)=>{
   terminateFunction(res,queries.rateBook(req.user.id,req.body.ISBN,req.body.rate))
 })
+router.post("mobile/rateBook",(req,res)=>{
+  terminateFunction(res,queries.rateBook(req.body.id,req.body.ISBN,req.body.rate))
+})
 
 router.post("/wishListBook",isLoggedIn,(req,res)=>{
   terminateFunction(res,queries.wishlistBook(req.user.id,req.body.ISBN))
+})
+
+
+router.post("/mobile/wishListBook",(req,res)=>{
+  terminateFunction(res,queries.wishlistBook(req.body.id,req.body.ISBN))
 })
 router.get("/rates",[isLoggedIn],(req,res)=>{
   terminateFunction(res,queries.getRatesOfUser(req.user.id))
@@ -133,6 +163,14 @@ router.get("/rates",[isLoggedIn],(req,res)=>{
 router.get("/wishlisted",[isLoggedIn],(req,res)=>{
   terminateFunction(res,queries.getWishlistOfUser(req.user.id))
 })
+
+router.post("/mobile/rates",(req,res)=>{
+  terminateFunction(res,queries.getRatesOfUser(req.body.id))
+})
+router.post("/mobile/wishlisted",(req,res)=>{
+  terminateFunction(res,queries.getWishlistOfUser(req.body.id))
+})
+
 const terminateFunction=(res,func)=>{       //function to terminate simple functions, where we send back the whole result from the query
   func.then((result)=>{
     res.json(result)

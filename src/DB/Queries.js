@@ -38,7 +38,7 @@ const wishlistBook=(id,ISBN)=>{
 
 const getWishlistOfUser=(id)=>{
     return new Promise((resolve,reject)=>{
-        Wishlist.findAll({attributes:{exclude:["id","userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((wishes)=>{
+        Wishlist.findAll({attributes:{exclude:["userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((wishes)=>{
             resolve(wishes)
         },err=>reject("DB error"))
     })

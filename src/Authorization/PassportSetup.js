@@ -1,4 +1,5 @@
-const passport = require('passport');
+require('dotenv').config()
+const passport = require('passport')
 //const params=require('../params.json')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local')
@@ -7,22 +8,17 @@ const {generateId}=require('../functions')
 const queries=require('../DB/Queries')
 
 passport.serializeUser(function(user, done) {
-    console.log(user)
      done(null, user.id);
   });
   
 passport.deserializeUser(function(userId, done) {
-    
-    //console.log("Delta is alive")
-    //console.log("Das userid:" ,userId)
+    console.log("deserializeduser:  ",userId)
     User.findOne({where:{id:userId}}).then((user)=>{
-        console.log(user)
         return done(null,user)
     },(err)=>{
-        console.log("faszomerrrro")
         return done(err,null)
     })
-  });
+});
 
 
 passport.use(new GoogleStrategy({
@@ -33,7 +29,7 @@ passport.use(new GoogleStrategy({
     function(token, tokenSecret, profile, done) {
         User.findOne({where:{googleId:profile.id}}).then((result)=>{
             if(result===null){
-              //console.log("I'm null")
+              console.log("I'm null")
               
                 User.create({id:generateId(),googleId:profile.id,email:profile.emails[0].value,name:profile.displayName,password:null}).then((user)=>{
                     return done(null,user)

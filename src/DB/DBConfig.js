@@ -1,3 +1,4 @@
+require('dotenv').config()
 const sequelize = require("sequelize");
 //const params = require("../params.json");
 
