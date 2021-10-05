@@ -11,12 +11,16 @@ const rateBook=(id,ISBN,rate)=>{
     rating=rate>=11 ? 10 : rate
     return new Promise((resolve,reject)=>{
         Book.findOne({where:{ISBN:ISBN}}).then((book)=>{
-            console.log(book)
+            //console.log(book)
             if(book===null){ reject("Invalid ISBN")}
             else{
                 Rate.create({id:generateId(),rate:rating,userId:id,bookId:book.dataValues.id}).then((rate)=>{
+                    console.log(rate)
                     resolve({"message":"OK"})
-                },err=>reject("Already rated"))
+                },err=>{
+                    console.log(err)
+                    reject("Already rated")
+                })
             }
         },err=>reject("DB error"))
     })
