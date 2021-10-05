@@ -145,7 +145,7 @@ router.get('/getAllBooks',(req,res)=>{                          //no need to be 
 router.post("/rateBook",isLoggedIn,(req,res)=>{
   terminateFunction(res,queries.rateBook(req.user.id,req.body.ISBN,req.body.rate))
 })
-router.post("mobile/rateBook",(req,res)=>{
+router.post("/mobile/rateBook",(req,res)=>{
   terminateFunction(res,queries.rateBook(req.body.id,req.body.ISBN,req.body.rate))
 })
 
