@@ -170,6 +170,9 @@ router.post("/mobile/rates",(req,res)=>{
 router.post("/mobile/wishlisted",(req,res)=>{
   terminateFunction(res,queries.getWishlistOfUser(req.body.id))
 })
+router.post("/mobile/averageRatings",(req,res)=>{
+  terminateFunction(res,queries.averageRatings(req.body.ISBN))
+})
 
 const terminateFunction=(res,func)=>{       //function to terminate simple functions, where we send back the whole result from the query
   func.then((result)=>{

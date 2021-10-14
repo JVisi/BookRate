@@ -21,7 +21,7 @@ passport.deserializeUser(function(userId, done) {
 });
 
 
-passport.use(new GoogleStrategy({
+/*passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_TOKEN,
         clientSecret: process.env.GOOGLE_SECRET,
         callbackURL: process.env.CALLBACK_URL
@@ -48,7 +48,7 @@ passport.use(new GoogleStrategy({
       })
     }
 ));
-
+*/
 passport.use('local',new LocalStrategy({
     usernameField:"user[email]",
     passwordField:"user[password]"

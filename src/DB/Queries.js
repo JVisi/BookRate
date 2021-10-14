@@ -40,6 +40,29 @@ const wishlistBook=(id,ISBN)=>{
     })
 }
 
+const averageRatings=(ISBN)=>{
+    let resultObj={}
+    return new Promise((resolve,reject)=>{
+        Book.findOne({where:{ISBN:ISBN}}).then(book=>{
+            book!=undefined ? Rate.findAll({where:{bookId:book.dataValues.id}}).then(rates=>{
+                rates.map(d=>{
+                    let rating=d.dataValues.rate
+                    if(resultObj[rating.toString()]==undefined){
+                        resultObj[rating.toString()]=1
+                    }
+                    else{
+                        resultObj[rating.toString()]+=1
+                    }
+                })
+                resolve({"ratings":resultObj})
+            }) : reject({"message":"no such book"})
+        },(err)=>{
+            console.log(err)
+            reject({"message":"no such book"})
+        })
+    })
+}
+
 const getWishlistOfUser=(id)=>{
     return new Promise((resolve,reject)=>{
         Wishlist.findAll({attributes:{exclude:["userId","bookId"]},where:{userId:id},include:[{model:Book,attributes:{exclude:["id"]}}]},).then((wishes)=>{
@@ -164,5 +187,6 @@ module.exports={
     searchBook,
     addBook,
     rateBook,
-    getRatesOfUser
+    getRatesOfUser,
+    averageRatings
 }
