@@ -54,7 +54,7 @@ const averageRatings=(ISBN)=>{
                         resultObj[rating.toString()]+=1
                     }
                 })
-                resolve(resultObj)
+                resolve({"ratings":resultObj})
             }) : reject({"message":"no such book"})
         },(err)=>{
             console.log(err)
